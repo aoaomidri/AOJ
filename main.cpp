@@ -1,28 +1,42 @@
 #include<iostream>
 #include<string>
-#include<vector>
 
 using namespace std;
 
 int main() {
-	std::string s, p;
+	string s, p;
+
+	string end = "END_OF_TEXT";
 	
-	bool isSucces = false;	
+	size_t count = 0;
 
-	cin >> s >> p;	
+	cin >> p;
+	while (true){
+		getline(cin, s);
+		string test;
+		for (size_t i = 0; i < s.size(); i++){
+			if (s[i] == ' ') {
+				if (test == p) {
+					count++;
+				}
+				test.clear();
+			}
+			else {
+				test.push_back(tolower(s[i]));
+			}
+			if (i == s.size() - 1) {
+				if (test == p) {
+					count++;
+				}
+			}
+		}
 
-	s = s + s;
-
-	if (s.find(p)!=string::npos){
-		isSucces = true;
+		if (s == end) {
+			break;
+		}
 	}
-		
-	if (isSucces){
-		cout << "Yes" << endl;
-	}
-	else {
-		cout << "No" << endl;
-	}
+	
+	cout << count << endl;
 
 	return 0;
 }
