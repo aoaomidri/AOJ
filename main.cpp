@@ -1,42 +1,41 @@
 #include<iostream>
 #include<string>
+#include<vector>
 
 using namespace std;
 
 int main() {
-	string s, p;
+	string s;
+	int count = 0;
+	int loop = 0;
 
-	string end = "END_OF_TEXT";
-	
-	size_t count = 0;
+	vector<string> stringBox;
 
-	cin >> p;
+	string end = "-";	
+
 	while (true){
-		getline(cin, s);
-		string test;
-		for (size_t i = 0; i < s.size(); i++){
-			if (s[i] == ' ') {
-				if (test == p) {
-					count++;
-				}
-				test.clear();
-			}
-			else {
-				test.push_back(tolower(s[i]));
-			}
-			if (i == s.size() - 1) {
-				if (test == p) {
-					count++;
-				}
-			}
-		}
-
+		int i = 0;
+		cin >> s;
 		if (s == end) {
 			break;
 		}
+		cin >> loop;
+		while (i < loop) {
+			cin >> count;
+			for (int j = 0; j < count; j++){
+				char c = s[0];
+				s.push_back(c);
+				s.erase(0, 1);
+			}
+			i++;
+		}
+
+		stringBox.push_back(s);
 	}
 	
-	cout << count << endl;
+	for (size_t i = 0; i < stringBox.size(); i++){
+		cout << stringBox[i] << endl;
+	}
 
 	return 0;
 }
