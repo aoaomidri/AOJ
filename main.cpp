@@ -1,41 +1,29 @@
 #include<iostream>
 #include<string>
-#include<vector>
 
 using namespace std;
 
 int main() {
-	string s;
-	int count = 0;
-	int loop = 0;
-
-	vector<string> stringBox;
-
-	string end = "-";	
-
-	while (true){
-		int i = 0;
-		cin >> s;
-		if (s == end) {
-			break;
+	string s, p;
+	int hanakoP = 0, taroP = 0;
+	int count = 0, i = 0;
+	cin >> count;
+	while (i < count) {
+		cin >> s >> p;
+		if (s > p) {
+			taroP += 3;
 		}
-		cin >> loop;
-		while (i < loop) {
-			cin >> count;
-			for (int j = 0; j < count; j++){
-				char c = s[0];
-				s.push_back(c);
-				s.erase(0, 1);
-			}
-			i++;
+		else if (s < p) {
+			hanakoP += 3;
+		}
+		else if (s == p) {
+			taroP++;
+			hanakoP++;
 		}
 
-		stringBox.push_back(s);
+		i++;
 	}
-	
-	for (size_t i = 0; i < stringBox.size(); i++){
-		cout << stringBox[i] << endl;
-	}
+	cout << taroP << ' ' << hanakoP << endl;
 
 	return 0;
 }
