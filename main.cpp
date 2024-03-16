@@ -1,18 +1,30 @@
 #include<iostream>
+#define _USE_MATH_DEFINES
 #include<math.h>
-
-using namespace std;
+#include<cmath>
 
 int main() {
-	double x1 = 0, y1 = 0;
-	double x2 = 0, y2 = 0;
+	double a = 0, b = 0, c = 0;
+	double radA = 0, radB = 0, radC = 0, degC = 0;
+	double S = 0, L = 0, h = 0, s = 0;
 
-	double result = 0.0f;
+	std::cin >> a >> b >> degC;
 
-	cin >> x1 >> y1 >> x2 >> y2;
+	radC = degC * M_PI / 180.0;
 
-	result = static_cast<double>(sqrt((pow((x2 - x1), 2.0f) + pow((y2 - y1), 2.0f))));
+	c = sqrt(pow(a, 2.0f) + pow(b, 2.0f) - 2.0f * a * b * cos(radC));
 
-	cout << std::fixed << result << endl;
+	L = a + b + c;
+
+	S = (a * b * std::sin(radC)) / 2.0f;
+
+	s = (a + b + c) / 2.0f;
+
+	h = (sqrt(s * (s - a) * (s - b) * (s - c)) * 2.0f) / a;
+
+	std::cout << std::fixed << S << std::endl;
+	std::cout << std::fixed << L << std::endl;
+	std::cout << std::fixed << h << std::endl;
+
 	return 0;
 }
