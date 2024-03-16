@@ -1,30 +1,38 @@
 #include<iostream>
 #define _USE_MATH_DEFINES
 #include<math.h>
-#include<cmath>
+#include<vector>
 
 int main() {
-	double a = 0, b = 0, c = 0;
-	double radA = 0, radB = 0, radC = 0, degC = 0;
-	double S = 0, L = 0, h = 0, s = 0;
+	int count = 0, s = 0;
+	double m = 0, a = 0;
+	std::vector<int> score;
+	std::vector<double> result;
+	while (true){
+		std::cin >> count;
+		if (count == 0)
+		break;
+		for (int i = 0; i < count; i++){
+			std::cin >> s;
+			m += s;
+			score.push_back(s);
 
-	std::cin >> a >> b >> degC;
+		}
+		m /= count;
+		for (int i = 0; i < count; i++){
+			a += pow((score[i] - m), 2.0f);
+		}
+		a = std::sqrt(a / count);
+		result.push_back(a);
 
-	radC = degC * M_PI / 180.0;
-
-	c = sqrt(pow(a, 2.0f) + pow(b, 2.0f) - 2.0f * a * b * cos(radC));
-
-	L = a + b + c;
-
-	S = (a * b * std::sin(radC)) / 2.0f;
-
-	s = (a + b + c) / 2.0f;
-
-	h = (sqrt(s * (s - a) * (s - b) * (s - c)) * 2.0f) / a;
-
-	std::cout << std::fixed << S << std::endl;
-	std::cout << std::fixed << L << std::endl;
-	std::cout << std::fixed << h << std::endl;
+		score.clear();
+		m = 0;
+		a = 0;
+	}
+	for (size_t i = 0; i < result.size(); i++){
+		std::cout << std::fixed << result[i] << std::endl;
+	}
+	
 
 	return 0;
 }
