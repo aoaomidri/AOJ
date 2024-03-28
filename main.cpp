@@ -36,37 +36,49 @@ public:
     int getTop() const {
         return numbers[0];
     }
+
+    int getRight(int top, int front) {
+        // サイコロを正しい方向に回転させる
+        if (front == numbers[2]){
+            rollWest();
+        }
+        else if(front == numbers[3]) {
+            rollEast();
+        }
+
+        while (numbers[1] != front) {
+            rollNorth();
+        }
+        while (numbers[0] != top) {
+            rollEast();
+        }
+
+        // 右側の面の整数を返す
+        return numbers[2];
+    }
 };
 
 int main() {
     std::vector<int> nums(6);
+    std::vector<int> result;
     for (int i = 0; i < 6; ++i) {
         std::cin >> nums[i];
     }
 
-    std::string commands;
-    std::cin >> commands;
-
     Dice dice(nums);
 
-    for (char command : commands) {
-        switch (command) {
-        case 'N':
-            dice.rollNorth();
-            break;
-        case 'S':
-            dice.rollSouth();
-            break;
-        case 'E':
-            dice.rollEast();
-            break;
-        case 'W':
-            dice.rollWest();
-            break;
-        }
+    // 質問の数を受け取る
+    int q;
+    std::cin >> q;
+
+    // 各質問に対してサイコロを回転させ、右側の面の整数を出力
+    for (int i = 0; i < q; ++i) {
+        int top, front;
+        std::cin >> top >> front;
+        result.push_back(dice.getRight(top, front));
     }
-
-    std::cout << dice.getTop() << std::endl;
-
+    for (int i = 0; i < q; ++i) {
+        std::cout << result[i] << std::endl;
+    }
     return 0;
 }
