@@ -1,52 +1,72 @@
 #include <iostream>
 #include <vector>
-#include <cmath>
+#include <string>
 
-static double minkowskiDistance(const std::vector<int>& x, const std::vector<int>& y, int p) {
-    double sum = 0.0;
-    if (p == 1) {
-        for (size_t i = 0; i < x.size(); ++i) {
-            sum += std::abs(x[i] - y[i]);
-        }
+class Dice {
+private:
+    std::vector<int> numbers;
+
+public:
+    Dice(const std::vector<int>& nums) : numbers(nums) {}
+
+    void rollNorth() {
+        std::swap(numbers[0], numbers[1]);
+        std::swap(numbers[1], numbers[5]);
+        std::swap(numbers[5], numbers[4]);
     }
-    else if (p == 2) {
-        for (size_t i = 0; i < x.size(); ++i) {
-            sum += std::pow(std::abs(x[i] - y[i]), 2);
-        }
-        sum = std::sqrt(sum);
+
+    void rollSouth() {
+        std::swap(numbers[0], numbers[4]);
+        std::swap(numbers[4], numbers[5]);
+        std::swap(numbers[5], numbers[1]);
     }
-    else if (p == 3) {
-        for (size_t i = 0; i < x.size(); ++i) {
-            sum += std::pow(std::abs(x[i] - y[i]), 3);
-        }
-        sum = std::pow(sum, 1.0 / 3.0);
+
+    void rollEast() {
+        std::swap(numbers[0], numbers[3]);
+        std::swap(numbers[3], numbers[5]);
+        std::swap(numbers[5], numbers[2]);
     }
-    else if (p == std::numeric_limits<int>::max()) {
-        for (size_t i = 0; i < x.size(); ++i) {
-            sum = std::max(sum, static_cast<double>(std::abs(x[i] - y[i])));
-        }
+
+    void rollWest() {
+        std::swap(numbers[0], numbers[2]);
+        std::swap(numbers[2], numbers[5]);
+        std::swap(numbers[5], numbers[3]);
     }
-    return sum;
-}
+
+    int getTop() const {
+        return numbers[0];
+    }
+};
 
 int main() {
-    int n;
-    std::cin >> n;
-
-    std::vector<int> x(n), y(n);
-    for (int i = 0; i < n; ++i) {
-        std::cin >> x[i];
-    }
-    for (int i = 0; i < n; ++i) {
-        std::cin >> y[i];
+    std::vector<int> nums(6);
+    for (int i = 0; i < 6; ++i) {
+        std::cin >> nums[i];
     }
 
-    std::cout << std::fixed;
-    std::cout.precision(6);
-    std::cout << minkowskiDistance(x, y, 1) << std::endl;
-    std::cout << minkowskiDistance(x, y, 2) << std::endl;
-    std::cout << minkowskiDistance(x, y, 3) << std::endl;
-    std::cout << minkowskiDistance(x, y, std::numeric_limits<int>::max()) << std::endl;
+    std::string commands;
+    std::cin >> commands;
+
+    Dice dice(nums);
+
+    for (char command : commands) {
+        switch (command) {
+        case 'N':
+            dice.rollNorth();
+            break;
+        case 'S':
+            dice.rollSouth();
+            break;
+        case 'E':
+            dice.rollEast();
+            break;
+        case 'W':
+            dice.rollWest();
+            break;
+        }
+    }
+
+    std::cout << dice.getTop() << std::endl;
 
     return 0;
 }
