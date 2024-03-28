@@ -49,6 +49,22 @@ public:
         return numbers_[3];
     }
 
+    int getBack() const {
+        return numbers_[4];
+    }
+
+    int getUnder() const {
+        return numbers_[5];
+    }
+
+    int getMax()const {
+        int max_value = numbers_[0];
+        for (int num : numbers_) {
+            max_value = std::max(max_value, num);
+        }
+        return max_value;
+    }
+
     int getRight(int top, int front) {
         // サイコロを正しい方向に回転させる
         if (front == numbers_[2]){
@@ -71,6 +87,10 @@ public:
 
     //このダイスと同一の物か確認する
     bool ChackDice(const Dice& dice2) {
+        if (getMax() != dice2.getMax()){
+            return false;
+        }
+        
         if (dice2.getFront() == numbers_[2]) {
             rollWest();
         }
@@ -82,36 +102,46 @@ public:
         }
         for (int i = 0; i < 4; i++){
             if (numbers_[0] == dice2.getTop() &&
-                numbers_[2] == dice2.getRight() &&
-                numbers_[3] == dice2.getLeft()) {
-                return true;
+                numbers_[2] == dice2.getRight()) {
+                break;
             }
 
             rollEast();
         }
+        if (numbers_[0] == dice2.getTop() &&
+            numbers_[2] == dice2.getRight() &&
+            numbers_[3] == dice2.getLeft()&&
+            getBack() == dice2.getBack() &&
+            getUnder() == dice2.getUnder()) {
+            return true;
+        }
+        
         return false;
     }
 };
 
 int main() {
-    std::vector<int> nums(6);
-    for (int i = 0; i < 6; ++i) {
-        std::cin >> nums[i];
-    }
-    Dice dice(nums);
-    for (int i = 0; i < 6; ++i) {
-        std::cin >> nums[i];
-    }
-    Dice dice2(nums);
+    int num;
+    std::vector<Dice> dices;
+    std::cin >> num;
+    for (int i = 0; i < num; i++){
+        std::vector<int> nums(6);
+        for (int j = 0; j < 6; ++j) {
+            std::cin >> nums[j];
+        }
+        Dice dice(nums);
 
-    if (dice.ChackDice(dice2) == true) {
-        std::cout << "Yes" << std::endl;
-    }
-    else {
-        std::cout << "No" << std::endl;
+        dices.push_back(dice);
     }
 
-    
-   
+    for (int i = 0; i < num - 1; i++) {
+        for (int j = i + 1; j < num; j++) {
+            if (dices[i].ChackDice(dices[j]) == true) {
+                std::cout << "No" << std::endl;
+                return 0;
+            }
+        }
+    }
+    std::cout << "Yes" << std::endl;
     return 0;
 }
