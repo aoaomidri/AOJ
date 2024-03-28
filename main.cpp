@@ -4,81 +4,114 @@
 
 class Dice {
 private:
-    std::vector<int> numbers;
+    std::vector<int> numbers_;
 
 public:
-    Dice(const std::vector<int>& nums) : numbers(nums) {}
+    Dice(const std::vector<int>& nums) : numbers_(nums) {}
 
     void rollNorth() {
-        std::swap(numbers[0], numbers[1]);
-        std::swap(numbers[1], numbers[5]);
-        std::swap(numbers[5], numbers[4]);
+        std::swap(numbers_[0], numbers_[1]);
+        std::swap(numbers_[1], numbers_[5]);
+        std::swap(numbers_[5], numbers_[4]);
     }
 
     void rollSouth() {
-        std::swap(numbers[0], numbers[4]);
-        std::swap(numbers[4], numbers[5]);
-        std::swap(numbers[5], numbers[1]);
+        std::swap(numbers_[0], numbers_[4]);
+        std::swap(numbers_[4], numbers_[5]);
+        std::swap(numbers_[5], numbers_[1]);
     }
 
     void rollEast() {
-        std::swap(numbers[0], numbers[3]);
-        std::swap(numbers[3], numbers[5]);
-        std::swap(numbers[5], numbers[2]);
+        std::swap(numbers_[0], numbers_[3]);
+        std::swap(numbers_[3], numbers_[5]);
+        std::swap(numbers_[5], numbers_[2]);
     }
 
     void rollWest() {
-        std::swap(numbers[0], numbers[2]);
-        std::swap(numbers[2], numbers[5]);
-        std::swap(numbers[5], numbers[3]);
+        std::swap(numbers_[0], numbers_[2]);
+        std::swap(numbers_[2], numbers_[5]);
+        std::swap(numbers_[5], numbers_[3]);
     }
 
     int getTop() const {
-        return numbers[0];
+        return numbers_[0];
+    }
+
+    int getFront() const {
+        return numbers_[1];
+    }
+
+    int getRight() const {
+        return numbers_[2];
+    }
+
+    int getLeft() const {
+        return numbers_[3];
     }
 
     int getRight(int top, int front) {
         // サイコロを正しい方向に回転させる
-        if (front == numbers[2]){
+        if (front == numbers_[2]){
             rollWest();
         }
-        else if(front == numbers[3]) {
+        else if(front == numbers_[3]) {
             rollEast();
         }
 
-        while (numbers[1] != front) {
+        while (numbers_[1] != front) {
             rollNorth();
         }
-        while (numbers[0] != top) {
+        while (numbers_[0] != top) {
             rollEast();
         }
 
         // 右側の面の整数を返す
-        return numbers[2];
+        return numbers_[2];
+    }
+
+    //このダイスと同一の物か確認する
+    bool ChackDice(const Dice& dice2) {
+        if (dice2.getFront() == numbers_[2]) {
+            rollWest();
+        }
+        else if (dice2.getFront()== numbers_[3]) {
+            rollEast();
+        }
+        while (numbers_[1] != dice2.getFront()) {
+            rollNorth();
+        }
+        for (int i = 0; i < 4; i++){
+            if (numbers_[0] == dice2.getTop() &&
+                numbers_[2] == dice2.getRight() &&
+                numbers_[3] == dice2.getLeft()) {
+                return true;
+            }
+
+            rollEast();
+        }
+        return false;
     }
 };
 
 int main() {
     std::vector<int> nums(6);
-    std::vector<int> result;
     for (int i = 0; i < 6; ++i) {
         std::cin >> nums[i];
     }
-
     Dice dice(nums);
-
-    // 質問の数を受け取る
-    int q;
-    std::cin >> q;
-
-    // 各質問に対してサイコロを回転させ、右側の面の整数を出力
-    for (int i = 0; i < q; ++i) {
-        int top, front;
-        std::cin >> top >> front;
-        result.push_back(dice.getRight(top, front));
+    for (int i = 0; i < 6; ++i) {
+        std::cin >> nums[i];
     }
-    for (int i = 0; i < q; ++i) {
-        std::cout << result[i] << std::endl;
+    Dice dice2(nums);
+
+    if (dice.ChackDice(dice2) == true) {
+        std::cout << "Yes" << std::endl;
     }
+    else {
+        std::cout << "No" << std::endl;
+    }
+
+    
+   
     return 0;
 }
