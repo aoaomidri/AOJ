@@ -9,55 +9,55 @@ private:
 public:
     Dice(const std::vector<int>& nums) : numbers_(nums) {}
 
-    void rollNorth() {
+    void RollNorth() {
         std::swap(numbers_[0], numbers_[1]);
         std::swap(numbers_[1], numbers_[5]);
         std::swap(numbers_[5], numbers_[4]);
     }
 
-    void rollSouth() {
+    void RollSouth() {
         std::swap(numbers_[0], numbers_[4]);
         std::swap(numbers_[4], numbers_[5]);
         std::swap(numbers_[5], numbers_[1]);
     }
 
-    void rollEast() {
+    void RollEast() {
         std::swap(numbers_[0], numbers_[3]);
         std::swap(numbers_[3], numbers_[5]);
         std::swap(numbers_[5], numbers_[2]);
     }
 
-    void rollWest() {
+    void RollWest() {
         std::swap(numbers_[0], numbers_[2]);
         std::swap(numbers_[2], numbers_[5]);
         std::swap(numbers_[5], numbers_[3]);
     }
 
-    int getTop() const {
+    int GetTop() const {
         return numbers_[0];
     }
 
-    int getFront() const {
+    int GetFront() const {
         return numbers_[1];
     }
 
-    int getRight() const {
+    int GetRight() const {
         return numbers_[2];
     }
 
-    int getLeft() const {
+    int GetLeft() const {
         return numbers_[3];
     }
 
-    int getBack() const {
+    int GetBack() const {
         return numbers_[4];
     }
 
-    int getUnder() const {
+    int GetUnder() const {
         return numbers_[5];
     }
 
-    int getMax()const {
+    int GetMax()const {
         int max_value = numbers_[0];
         for (int num : numbers_) {
             max_value = std::max(max_value, num);
@@ -65,20 +65,20 @@ public:
         return max_value;
     }
 
-    int getRight(int top, int front) {
+    int GetRight(int top, int front) {
         // サイコロを正しい方向に回転させる
         if (front == numbers_[2]){
-            rollWest();
+            RollWest();
         }
         else if(front == numbers_[3]) {
-            rollEast();
+            RollEast();
         }
 
         while (numbers_[1] != front) {
-            rollNorth();
+            RollNorth();
         }
         while (numbers_[0] != top) {
-            rollEast();
+            RollEast();
         }
 
         // 右側の面の整数を返す
@@ -87,32 +87,32 @@ public:
 
     //このダイスと同一の物か確認する
     bool ChackDice(const Dice& dice2) {
-        if (getMax() != dice2.getMax()){
+        if (GetMax() != dice2.GetMax()){
             return false;
         }
         
-        if (dice2.getFront() == numbers_[2]) {
-            rollWest();
+        if (dice2.GetFront() == numbers_[2]) {
+            RollWest();
         }
-        else if (dice2.getFront()== numbers_[3]) {
-            rollEast();
+        else if (dice2.GetFront()== numbers_[3]) {
+            RollEast();
         }
-        while (numbers_[1] != dice2.getFront()) {
-            rollNorth();
+        while (numbers_[1] != dice2.GetFront()) {
+            RollNorth();
         }
         for (int i = 0; i < 4; i++){
-            if (numbers_[0] == dice2.getTop() &&
-                numbers_[2] == dice2.getRight()) {
+            if (numbers_[0] == dice2.GetTop() &&
+                numbers_[2] == dice2.GetRight()) {
                 break;
             }
 
-            rollEast();
+            RollEast();
         }
-        if (numbers_[0] == dice2.getTop() &&
-            numbers_[2] == dice2.getRight() &&
-            numbers_[3] == dice2.getLeft()&&
-            getBack() == dice2.getBack() &&
-            getUnder() == dice2.getUnder()) {
+        if (numbers_[0] == dice2.GetTop() &&
+            numbers_[2] == dice2.GetRight() &&
+            numbers_[3] == dice2.GetLeft()&&
+            GetBack() == dice2.GetBack() &&
+            GetUnder() == dice2.GetUnder()) {
             return true;
         }
         
